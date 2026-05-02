@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Access Denied')}"></head>
+<body>
+<div th:replace="~{fragments/header :: siteHeader('error')}"></div>
+<main class="section-shell">
+    <div class="site-shell">
+        <section class="panel empty-state reveal">
+            <span class="eyebrow">Restricted Area</span>
+            <h1>Access denied</h1>
+            <p>You do not have the correct session role to open this page.</p>
+            <a class="primary-btn" th:href="@{/login}">Return to Login</a>
+        </section>
+    </div>
+</main>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

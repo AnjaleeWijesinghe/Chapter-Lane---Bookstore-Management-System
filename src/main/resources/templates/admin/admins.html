@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin Management')}"></head>
+<body class="admin-theme">
+<div th:replace="~{fragments/header :: siteHeader('admin')}"></div>
+
+<main class="section-shell">
+    <div class="site-shell split-dashboard">
+        <section class="panel reveal">
+            <div class="section-heading compact">
+                <span class="eyebrow">Member 5</span>
+                <h1>Admin Management</h1>
+            </div>
+
+            <div class="card-list">
+                <article class="admin-card" th:each="admin : ${admins}">
+                    <div>
+                        <h2 th:text="${admin.fullName}">Admin Name</h2>
+                        <p class="muted" th:text="${admin.email}">Email</p>
+                        <div class="chip-row">
+                            <span class="badge" th:text="${admin.permissionLevel}">Permission</span>
+                            <span class="badge" th:text="${admin.badgeLabel}">Badge</span>
+                        </div>
+                    </div>
+                    <div class="action-row">
+                        <a class="ghost-btn compact" th:href="@{/admin/admins(edit=${admin.id})}">Edit</a>
+                        <form th:action="@{'/admin/admins/' + ${admin.id} + '/delete'}" method="post">
+                            <button class="danger-btn compact" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel reveal sticky-panel">
+            <h2 th:text="${editingAdminId != '' ? 'Edit Admin' : 'Create Admin'}">Create Admin</h2>
+            <form th:action="@{/admin/admins}" th:object="${adminForm}" method="post" class="form-grid">
+                <input type="hidden" th:field="*{id}">
+
+                <label>
+                    Full name
+                    <input type="text" th:field="*{fullName}">
+                </label>
+
+                <label>
+                    Email
+                    <input type="email" th:field="*{email}">
+                </label>
+
+                <label>
+                    Phone
+                    <input type="text" th:field="*{phone}">
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" th:field="*{password}">
+                </label>
+
+                <label>
+                    Permission level
+                    <select th:field="*{permissionLevel}">
+                        <option value="">Select level</option>
+                        <option th:each="level : ${permissionLevels}" th:value="${level}" th:text="${level}">Level</option>
+                    </select>
+                </label>
+
+                <label>
+                    Badge label
+                    <input type="text" th:field="*{badgeLabel}">
+                </label>
+
+                <button class="primary-btn span-2" type="submit" th:text="${editingAdminId != '' ? 'Save Admin' : 'Create Admin'}">Create Admin</button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

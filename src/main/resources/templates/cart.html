@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Cart')}"></head>
+<body>
+<div class="orb orb-three"></div>
+<div th:replace="~{fragments/header :: siteHeader('cart')}"></div>
+
+<main class="section-shell">
+    <div class="site-shell cart-layout">
+        <section class="panel reveal">
+            <div class="section-heading compact">
+                <span class="eyebrow">Cart Management</span>
+                <h1>Your current reading haul</h1>
+            </div>
+
+            <div class="empty-state" th:if="${#lists.isEmpty(cart.items)}">
+                <h3>Your cart is empty.</h3>
+                <p>Add books from the catalog to see pricing, quantities, and checkout tools here.</p>
+                <a class="primary-btn" th:href="@{/catalog}">Browse Catalog</a>
+            </div>
+
+            <div class="cart-items" th:if="${!#lists.isEmpty(cart.items)}">
+                <article class="cart-item" th:each="item : ${cart.items}">
+                    <div class="cart-accent" th:style="'background:' + ${item.coverTone}"></div>
+                    <div class="cart-copy">
+                        <h3 th:text="${item.title}">Title</h3>
+                        <p class="muted" th:text="${item.formatLabel}">Format</p>
+                    </div>
+                    <form th:action="@{'/cart/update/' + ${item.bookId}}" method="post" class="quantity-form">
+                        <input type="number" name="quantity" min="0" th:value="${item.quantity}">
+                        <button class="ghost-btn compact" type="submit">Update</button>
+                    </form>
+                    <strong th:text="${#numbers.formatDecimal(item.lineTotal, 1, 2)} + ' USD'">0.00 USD</strong>
+                    <form th:action="@{'/cart/remove/' + ${item.bookId}}" method="post">
+                        <button class="danger-btn compact" type="submit">Remove</button>
+                    </form>
+                </article>
+            </div>
+
+            <form th:if="${!#lists.isEmpty(cart.items)}" th:action="@{/cart/clear}" method="post" class="action-row">
+                <button class="ghost-btn" type="submit">Clear Cart</button>
+            </form>
+        </section>
+
+        <aside class="panel reveal sticky-panel">
+            <span class="eyebrow">Order Summary</span>
+            <div class="summary-row">
+                <span>Items</span>
+                <strong th:text="${cart.totalItems}">0</strong>
+            </div>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong th:text="${#numbers.formatDecimal(cart.subtotal, 1, 2)} + ' USD'">0.00 USD</strong>
+            </div>
+
+            <form th:action="@{/orders/checkout}" th:object="${checkoutForm}" method="post" class="form-stack">
+                <label>
+                    Shipping address
+                    <textarea rows="3" th:field="*{shippingAddress}"></textarea>
+                </label>
+                <label>
+                    Order note
+                    <textarea rows="3" th:field="*{note}" placeholder="Optional delivery note or gift request"></textarea>
+                </label>
+                <button class="primary-btn" type="submit" th:disabled="${#lists.isEmpty(cart.items)}">Place Order</button>
+            </form>
+        </aside>
+    </div>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

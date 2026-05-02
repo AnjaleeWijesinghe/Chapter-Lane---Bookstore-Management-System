@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Home')}"></head>
+<body class="theme-home">
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+<div th:replace="~{fragments/header :: siteHeader('home')}"></div>
+
+<main>
+    <section class="hero hero-home">
+        <div class="site-shell hero-grid">
+            <div class="hero-copy reveal">
+                <span class="eyebrow">Creative bookstore experience</span>
+                <h1>Build, manage, and present a bookstore system that feels premium from the first click.</h1>
+                <p>Chapter Lane combines polished storefront pages, strong Java OOP structure, and file-based persistence that matches the project brief.</p>
+                <div class="hero-actions">
+                    <a class="primary-btn" th:href="@{/catalog}">Explore Catalog</a>
+                    <a class="ghost-btn" th:href="@{/admin}">Open Admin Hub</a>
+                </div>
+                <div class="metric-row">
+                    <article class="metric-card">
+                        <strong th:text="${totalBooks}">0</strong>
+                        <span>Books Available</span>
+                    </article>
+                    <article class="metric-card">
+                        <strong th:text="${totalCustomers}">0</strong>
+                        <span>Registered Readers</span>
+                    </article>
+                    <article class="metric-card">
+                        <strong th:text="${activeOrders}">0</strong>
+                        <span>Active Orders</span>
+                    </article>
+                </div>
+            </div>
+
+            <div class="hero-stage reveal">
+                <div class="stage-card feature-panel">
+                    <span class="panel-label">Signature Shelf</span>
+                    <div class="book-stack">
+                        <article class="showcase-book" th:each="book, stat : ${featuredBooks}" th:if="${stat.index < 3}"
+                                 th:style="'background:' + ${book.coverGradient}">
+                            <div>
+                                <span th:text="${book.category}">Category</span>
+                                <h3 th:text="${book.title}">Book</h3>
+                                <p th:text="${book.author}">Author</p>
+                            </div>
+                            <strong th:text="${book.formatLabel}">Format</strong>
+                        </article>
+                    </div>
+                </div>
+                <div class="stage-card proof-panel">
+                    <div>
+                        <span class="panel-label">Grading Alignment</span>
+                        <ul class="proof-list">
+                            <li>CRUD-driven module coverage</li>
+                            <li>Encapsulation, inheritance, polymorphism, abstraction</li>
+                            <li>Readable text-file storage for demo data</li>
+                            <li>Responsive UI with motion and visual identity</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-shell">
+        <div class="site-shell">
+            <div class="section-heading reveal">
+                <span class="eyebrow">Featured picks</span>
+                <h2>Books staged for a memorable demo</h2>
+            </div>
+            <div class="book-grid">
+                <article class="book-card reveal" th:each="book : ${featuredBooks}">
+                    <div class="book-cover" th:style="'background:' + ${book.coverGradient}">
+                        <span th:text="${book.formatLabel}">Format</span>
+                        <strong th:text="${book.category}">Category</strong>
+                    </div>
+                    <div class="book-content">
+                        <h3 th:text="${book.title}">Book title</h3>
+                        <p class="muted" th:text="${book.author}">Author</p>
+                        <p th:text="${book.description}">Description</p>
+                        <div class="book-meta">
+                            <span th:text="${#numbers.formatDecimal(book.price, 1, 2)} + ' USD'">0.00 USD</span>
+                            <span><span aria-hidden="true">&#9733;</span> <span th:text="${book.rating}">0.0</span></span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

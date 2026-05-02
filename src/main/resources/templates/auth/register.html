@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Register')}"></head>
+<body class="auth-theme">
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+<div th:replace="~{fragments/header :: siteHeader('register')}"></div>
+
+<main class="auth-shell">
+    <section class="site-shell auth-grid wide">
+        <article class="auth-showcase reveal">
+            <span class="eyebrow">Create Account</span>
+            <h1>Build an account that makes future book orders easy.</h1>
+            <p class="auth-lead">Save your delivery details, keep your reading preferences in one place, and move through checkout with less effort.</p>
+
+            <div class="auth-insights">
+                <article class="auth-insight">
+                    <strong>Faster repeat checkout</strong>
+                    <p>Keep your address and core profile details ready whenever you return to buy again.</p>
+                </article>
+                <article class="auth-insight">
+                    <strong>A more personal storefront</strong>
+                    <p>Your favorite genre helps shape a browsing experience that feels tailored instead of generic.</p>
+                </article>
+                <article class="auth-insight">
+                    <strong>Track every purchase clearly</strong>
+                    <p>Once you place an order, your account becomes the single place to review order history and status.</p>
+                </article>
+            </div>
+
+            <p class="auth-support">After registration, you will be signed in automatically and taken straight to the storefront.</p>
+        </article>
+
+        <article class="auth-card reveal">
+            <h2>Create your account</h2>
+            <p class="muted auth-subtitle">A few details now make delivery, profile management, and future purchases much smoother.</p>
+
+            <form th:action="@{/register}" th:object="${registrationForm}" method="post" class="form-grid">
+                <label>
+                    Full name
+                    <input type="text" th:field="*{fullName}" placeholder="Ariya Fernando" autocomplete="name">
+                    <small class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name error</small>
+                </label>
+
+                <label>
+                    Email address
+                    <input type="email" th:field="*{email}" placeholder="name@example.com" autocomplete="email">
+                    <small class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</small>
+                </label>
+
+                <label>
+                    Phone number
+                    <input type="text" th:field="*{phone}" placeholder="+94 77 123 4567" autocomplete="tel" inputmode="tel">
+                    <small class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone error</small>
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" th:field="*{password}" placeholder="Create a password" autocomplete="new-password">
+                    <small class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</small>
+                </label>
+
+                <label>
+                    Favorite genre
+                    <input type="text" th:field="*{favoriteGenre}" placeholder="Fantasy, Business, Mystery">
+                    <small class="field-error" th:if="${#fields.hasErrors('favoriteGenre')}" th:errors="*{favoriteGenre}">Genre error</small>
+                </label>
+
+                <label>
+                    Membership tier
+                    <select th:field="*{loyaltyTier}">
+                        <option value="">Select a membership tier</option>
+                        <option value="Silver">Silver</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Platinum">Platinum</option>
+                    </select>
+                    <small class="field-error" th:if="${#fields.hasErrors('loyaltyTier')}" th:errors="*{loyaltyTier}">Tier error</small>
+                </label>
+
+                <label class="span-2">
+                    Shipping address
+                    <textarea th:field="*{shippingAddress}" rows="3" placeholder="Street address, city, postal code" autocomplete="street-address"></textarea>
+                    <small class="field-error" th:if="${#fields.hasErrors('shippingAddress')}" th:errors="*{shippingAddress}">Address error</small>
+                </label>
+
+                <button class="primary-btn span-2" type="submit">Create Account</button>
+            </form>
+
+            <div class="auth-form-footer">
+                <span>Already have an account?</span>
+                <a th:href="@{/login}">Sign in instead</a>
+            </div>
+        </article>
+    </section>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

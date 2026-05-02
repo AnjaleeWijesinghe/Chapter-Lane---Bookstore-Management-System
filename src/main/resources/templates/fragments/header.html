@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="siteHeader(activePage)" class="site-header">
+    <div class="site-shell nav-shell">
+        <a class="brandmark" th:href="@{/}">
+            <span class="brandmark-icon">CL</span>
+            <span>
+                <strong>Chapter Lane</strong>
+                <small>Curated books, smoother checkout, and reader-first accounts</small>
+            </span>
+        </a>
+
+        <nav class="nav-links">
+            <a th:href="@{/}" th:classappend="${activePage == 'home'} ? 'active'">Home</a>
+            <a th:href="@{/catalog}" th:classappend="${activePage == 'catalog'} ? 'active'">Catalog</a>
+
+            <th:block th:if="${isCustomerAuthenticated}">
+                <a th:href="@{/cart}" th:classappend="${activePage == 'cart'} ? 'active'">
+                    Cart
+                    <span class="nav-pill" th:text="${cartItemCount}">0</span>
+                </a>
+                <a th:href="@{/orders}" th:classappend="${activePage == 'orders'} ? 'active'">Orders</a>
+                <a th:href="@{/profile}" th:classappend="${activePage == 'profile'} ? 'active'">Profile</a>
+            </th:block>
+
+            <th:block th:if="${isAdminAuthenticated}">
+                <a th:href="@{/admin}" th:classappend="${activePage == 'admin'} ? 'active'">Admin Hub</a>
+            </th:block>
+        </nav>
+
+        <div class="nav-actions">
+            <th:block th:if="${!isCustomerAuthenticated and !isAdminAuthenticated}">
+                <a class="ghost-btn" th:if="${activePage != 'login'}" th:href="@{/login}">Sign In</a>
+                <a class="primary-btn compact" th:if="${activePage != 'register'}" th:href="@{/register}">Create Account</a>
+            </th:block>
+
+            <th:block th:if="${isCustomerAuthenticated}">
+                <div class="identity-pill">
+                    <span>Reader</span>
+                    <strong th:text="${currentCustomer.fullName}">Customer</strong>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <button class="ghost-btn" type="submit">Logout</button>
+                </form>
+            </th:block>
+
+            <th:block th:if="${isAdminAuthenticated}">
+                <div class="identity-pill admin-tone">
+                    <span>Admin</span>
+                    <strong th:text="${currentAdmin.fullName}">Admin</strong>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <button class="ghost-btn" type="submit">Logout</button>
+                </form>
+            </th:block>
+        </div>
+    </div>
+</header>
+</body>
+</html>

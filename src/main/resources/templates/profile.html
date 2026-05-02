@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Profile')}"></head>
+<body>
+<div class="orb orb-two"></div>
+<div class="orb orb-four"></div>
+<div th:replace="~{fragments/header :: siteHeader('profile')}"></div>
+
+<main class="section-shell">
+    <div class="site-shell split-dashboard">
+        <section class="panel profile-spotlight reveal">
+            <span class="eyebrow">User Management</span>
+            <h1 th:text="${currentCustomer.fullName}">Customer Name</h1>
+            <p>Keep reader details up to date so order delivery, loyalty segmentation, and user search remain accurate.</p>
+            <div class="identity-stats">
+                <article>
+                    <strong th:text="${currentCustomer.loyaltyTier}">Gold</strong>
+                    <span>Loyalty Tier</span>
+                </article>
+                <article>
+                    <strong th:text="${currentCustomer.favoriteGenre}">Fantasy</strong>
+                    <span>Favorite Genre</span>
+                </article>
+                <article>
+                    <strong th:text="${currentCustomer.active ? 'Active' : 'Inactive'}">Active</strong>
+                    <span>Account Status</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel reveal">
+            <h2>Edit profile</h2>
+            <form th:action="@{/profile}" th:object="${profileForm}" method="post" class="form-grid">
+                <label>
+                    Full name
+                    <input type="text" th:field="*{fullName}">
+                    <small class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name error</small>
+                </label>
+
+                <label>
+                    Email
+                    <input type="email" th:field="*{email}">
+                    <small class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</small>
+                </label>
+
+                <label>
+                    Phone
+                    <input type="text" th:field="*{phone}">
+                    <small class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone error</small>
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" th:field="*{password}">
+                    <small class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</small>
+                </label>
+
+                <label>
+                    Favorite genre
+                    <input type="text" th:field="*{favoriteGenre}">
+                    <small class="field-error" th:if="${#fields.hasErrors('favoriteGenre')}" th:errors="*{favoriteGenre}">Genre error</small>
+                </label>
+
+                <label>
+                    Loyalty tier
+                    <select th:field="*{loyaltyTier}">
+                        <option value="Silver">Silver</option>
+                        <option value="Gold">Gold</option>
+                        <option value="Platinum">Platinum</option>
+                    </select>
+                    <small class="field-error" th:if="${#fields.hasErrors('loyaltyTier')}" th:errors="*{loyaltyTier}">Tier error</small>
+                </label>
+
+                <label class="span-2">
+                    Shipping address
+                    <textarea rows="3" th:field="*{shippingAddress}"></textarea>
+                    <small class="field-error" th:if="${#fields.hasErrors('shippingAddress')}" th:errors="*{shippingAddress}">Address error</small>
+                </label>
+
+                <div class="action-row span-2">
+                    <button class="primary-btn" type="submit">Save Changes</button>
+                </div>
+            </form>
+
+            <form th:action="@{/profile/delete}" method="post" class="danger-zone">
+                <div>
+                    <strong>Delete account</strong>
+                    <p>This removes your customer profile from the system.</p>
+                </div>
+                <button type="submit" class="danger-btn">Delete Profile</button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

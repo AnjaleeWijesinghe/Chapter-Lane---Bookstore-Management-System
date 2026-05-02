@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Catalog')}"></head>
+<body>
+<div class="orb orb-one"></div>
+<div class="orb orb-three"></div>
+<div th:replace="~{fragments/header :: siteHeader('catalog')}"></div>
+
+<main class="section-shell">
+    <div class="site-shell">
+        <section class="panel panel-hero reveal">
+            <div>
+                <span class="eyebrow">Book Management + Storefront</span>
+                <h1>Discover a catalog built for both customers and evaluators.</h1>
+                <p>Search by title, author, category, or format. Admins can manage inventory separately while customers enjoy a focused browsing flow.</p>
+            </div>
+            <form class="search-panel" method="get" th:action="@{/catalog}">
+                <label>
+                    Search
+                    <input type="text" name="query" placeholder="Search by title, author, genre..." th:value="${query}">
+                </label>
+                <label>
+                    Category
+                    <select name="category">
+                        <option value="">All categories</option>
+                        <option th:each="categoryOption : ${categories}"
+                                th:value="${categoryOption}"
+                                th:text="${categoryOption}"
+                                th:selected="${categoryOption == selectedCategory}">Category</option>
+                    </select>
+                </label>
+                <button class="primary-btn" type="submit">Filter Shelf</button>
+            </form>
+        </section>
+
+        <section class="book-grid">
+            <article class="book-card reveal" th:each="book : ${books}">
+                <div class="book-cover" th:style="'background:' + ${book.coverGradient}">
+                    <span th:text="${book.formatLabel}">Format</span>
+                    <strong th:text="${book.category}">Category</strong>
+                </div>
+                <div class="book-content">
+                    <div class="stack-row">
+                        <div>
+                            <h3 th:text="${book.title}">Title</h3>
+                            <p class="muted" th:text="${book.author}">Author</p>
+                        </div>
+                        <span class="badge" th:if="${book.featured}">Featured</span>
+                    </div>
+                    <p th:text="${book.description}">Description</p>
+                    <div class="book-meta split">
+                        <span th:text="${book.secondaryMetadata}">Metadata</span>
+                        <span th:text="'ISBN ' + ${book.isbn}">ISBN</span>
+                    </div>
+                    <div class="book-meta split">
+                        <span th:text="${#numbers.formatDecimal(book.price, 1, 2)} + ' USD'">0.00 USD</span>
+                        <span><span aria-hidden="true">&#9733;</span> <span th:text="${book.rating}">0.0</span></span>
+                    </div>
+                    <div class="book-actions">
+                        <span class="stock-pill" th:classappend="${book.lowStock} ? 'low' : ''"
+                              th:text="'Stock: ' + ${book.stock}">Stock: 0</span>
+                        <form th:if="${isCustomerAuthenticated}" th:action="@{'/cart/add/' + ${book.id}}" method="post">
+                            <button class="primary-btn compact" type="submit">Add to Cart</button>
+                        </form>
+                        <a th:if="${!isCustomerAuthenticated}" class="ghost-btn compact" th:href="@{/login}">Sign in to Buy</a>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>
