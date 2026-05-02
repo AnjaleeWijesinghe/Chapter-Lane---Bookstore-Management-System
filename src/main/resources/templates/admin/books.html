@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Book Management')}"></head>
+<body class="admin-theme">
+<div th:replace="~{fragments/header :: siteHeader('admin')}"></div>
+
+<main class="section-shell">
+    <div class="site-shell split-dashboard">
+        <section class="panel reveal">
+            <div class="section-heading compact">
+                <span class="eyebrow">Member 2</span>
+                <h1>Book Management</h1>
+            </div>
+
+            <form method="get" th:action="@{/admin/books}" class="search-panel inline">
+                <label class="wide-input">
+                    Search books
+                    <input type="text" name="query" th:value="${query}" placeholder="Title, author, category, format">
+                </label>
+                <label>
+                    Category
+                    <select name="category">
+                        <option value="">All categories</option>
+                        <option th:each="categoryOption : ${categories}"
+                                th:value="${categoryOption}"
+                                th:text="${categoryOption}"
+                                th:selected="${categoryOption == selectedCategory}">Category</option>
+                    </select>
+                </label>
+                <button class="primary-btn" type="submit">Filter</button>
+            </form>
+
+            <div class="table-shell">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="book : ${books}">
+                        <td>
+                            <strong th:text="${book.title}">Title</strong>
+                            <small th:text="${book.author}">Author</small>
+                        </td>
+                        <td th:text="${book.formatLabel}">Format</td>
+                        <td th:text="${#numbers.formatDecimal(book.price, 1, 2)} + ' USD'">0.00 USD</td>
+                        <td th:text="${book.stock}">0</td>
+                        <td class="action-cell">
+                            <a class="ghost-btn compact" th:href="@{/admin/books(edit=${book.id})}">Edit</a>
+                            <form th:action="@{'/admin/books/' + ${book.id} + '/delete'}" method="post">
+                                <button class="danger-btn compact" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel reveal sticky-panel">
+            <h2 th:text="${editingBookId != '' ? 'Edit Book' : 'Create Book'}">Create Book</h2>
+            <form th:action="@{/admin/books}" th:object="${bookForm}" method="post" class="form-grid">
+                <input type="hidden" th:field="*{id}">
+
+                <label>
+                    Type
+                    <select th:field="*{bookType}">
+                        <option value="PRINTED">Printed</option>
+                        <option value="DIGITAL">Digital</option>
+                    </select>
+                </label>
+
+                <label>
+                    Title
+                    <input type="text" th:field="*{title}">
+                </label>
+
+                <label>
+                    Author
+                    <input type="text" th:field="*{author}">
+                </label>
+
+                <label>
+                    Category
+                    <input type="text" th:field="*{category}">
+                </label>
+
+                <label>
+                    ISBN
+                    <input type="text" th:field="*{isbn}">
+                </label>
+
+                <label>
+                    Price
+                    <input type="number" step="0.01" th:field="*{price}">
+                </label>
+
+                <label>
+                    Stock
+                    <input type="number" th:field="*{stock}">
+                </label>
+
+                <label>
+                    Rating
+                    <input type="number" step="0.1" min="0" max="5" th:field="*{rating}">
+                </label>
+
+                <label>
+                    Accent color
+                    <input type="text" th:field="*{accentColor}" placeholder="#114B5F">
+                </label>
+
+                <label>
+                    Cover tone
+                    <input type="text" th:field="*{coverTone}" placeholder="#FFD166">
+                </label>
+
+                <label>
+                    Page count
+                    <input type="number" th:field="*{pageCount}">
+                </label>
+
+                <label>
+                    Shelf code
+                    <input type="text" th:field="*{shelfCode}">
+                </label>
+
+                <label>
+                    File format
+                    <input type="text" th:field="*{fileFormat}">
+                </label>
+
+                <label>
+                    File size (MB)
+                    <input type="number" step="0.1" th:field="*{fileSizeMb}">
+                </label>
+
+                <label class="span-2">
+                    Description
+                    <textarea rows="4" th:field="*{description}"></textarea>
+                </label>
+
+                <label class="checkbox-field span-2">
+                    <input type="checkbox" th:field="*{featured}">
+                    Mark as featured
+                </label>
+
+                <button class="primary-btn span-2" type="submit" th:text="${editingBookId != '' ? 'Save Changes' : 'Create Book'}">Create Book</button>
+            </form>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin Dashboard')}"></head>
+<body class="admin-theme">
+<div class="orb orb-four"></div>
+<div th:replace="~{fragments/header :: siteHeader('admin')}"></div>
+
+<main class="section-shell">
+    <div class="site-shell">
+        <section class="panel admin-hero reveal">
+            <div>
+                <span class="eyebrow">Admin Management</span>
+                <h1>Store intelligence in one polished control room.</h1>
+                <p>Use this dashboard to steer inventory, user flow, order progress, and administrative oversight with clean module separation.</p>
+            </div>
+            <div class="metric-row admin-metrics">
+                <article class="metric-card">
+                    <strong th:text="${bookCount}">0</strong>
+                    <span>Total Books</span>
+                </article>
+                <article class="metric-card">
+                    <strong th:text="${customerCount}">0</strong>
+                    <span>Customers</span>
+                </article>
+                <article class="metric-card">
+                    <strong th:text="${orderCount}">0</strong>
+                    <span>Orders</span>
+                </article>
+                <article class="metric-card">
+                    <strong th:text="${totalStock}">0</strong>
+                    <span>Inventory Units</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="admin-link-grid">
+            <a class="panel reveal admin-link-card" th:href="@{/admin/users}">
+                <h2>User Management</h2>
+                <p>Search, review, and delete customer accounts.</p>
+            </a>
+            <a class="panel reveal admin-link-card" th:href="@{/admin/books}">
+                <h2>Book Management</h2>
+                <p>Create, update, filter, and remove catalog entries.</p>
+            </a>
+            <a class="panel reveal admin-link-card" th:href="@{/admin/orders}">
+                <h2>Order Management</h2>
+                <p>Track order states and handle lifecycle updates.</p>
+            </a>
+            <a class="panel reveal admin-link-card" th:href="@{/admin/admins}">
+                <h2>Admin Management</h2>
+                <p>Control internal access and admin role details.</p>
+            </a>
+        </section>
+
+        <section class="panel reveal">
+            <div class="summary-row">
+                <span>Revenue captured</span>
+                <strong th:text="${#numbers.formatDecimal(revenue, 1, 2)} + ' USD'">0.00 USD</strong>
+            </div>
+        </section>
+
+        <section class="panel reveal">
+            <div class="section-heading compact">
+                <span class="eyebrow">Activity Log</span>
+                <h2>Recent admin actions</h2>
+            </div>
+            <div class="log-list">
+                <article class="log-item" th:each="log : ${recentLogs}">
+                    <div>
+                        <strong th:text="${log.adminName}">Admin</strong>
+                        <p th:text="${log.description}">Description</p>
+                    </div>
+                    <div class="log-meta">
+                        <span th:text="${log.actionType}">ACTION</span>
+                        <small th:text="${#temporals.format(log.occurredAt, 'dd MMM yyyy')} + ' | ' + ${#temporals.format(log.occurredAt, 'hh:mm a')}">Date</small>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

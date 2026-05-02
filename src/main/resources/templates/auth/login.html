@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Login')}"></head>
+<body class="auth-theme">
+<div class="orb orb-two"></div>
+<div class="orb orb-three"></div>
+<div th:replace="~{fragments/header :: siteHeader('login')}"></div>
+
+<main class="auth-shell">
+    <section class="site-shell auth-grid">
+        <article class="auth-showcase reveal">
+            <span class="eyebrow">Account Access</span>
+            <h1>Welcome back to the account behind your next order.</h1>
+            <p class="auth-lead">Sign in to continue shopping, manage your cart, and keep every purchase organized from one secure place.</p>
+
+            <div class="auth-insights">
+                <article class="auth-insight">
+                    <strong>Faster repeat checkout</strong>
+                    <p>Your saved profile details and delivery address stay ready for future purchases.</p>
+                </article>
+                <article class="auth-insight">
+                    <strong>Clear order visibility</strong>
+                    <p>Review current order status, previous purchases, and account details without jumping between pages.</p>
+                </article>
+                <article class="auth-insight">
+                    <strong>Separate staff access</strong>
+                    <p>Bookstore staff can switch to admin access to manage books, readers, and daily operations.</p>
+                </article>
+            </div>
+
+            <p class="auth-support">New here? Create a customer account in under a minute and start building your shelf right away.</p>
+        </article>
+
+        <article class="auth-card reveal">
+            <h2>Sign in</h2>
+            <p class="muted auth-subtitle">Use the email address and password connected to your Chapter Lane account.</p>
+
+            <div class="auth-context" th:if="${requiredRole == 'customer'}">
+                <strong>Customer sign-in required</strong>
+                <p>Please sign in with a customer account to continue browsing, cart, and checkout pages.</p>
+            </div>
+
+            <div class="auth-context" th:if="${requiredRole == 'admin'}">
+                <strong>Admin sign-in required</strong>
+                <p>Please use an admin account to continue to the bookstore management area.</p>
+            </div>
+
+            <form th:action="@{/login}" th:object="${loginForm}" method="post" class="form-stack">
+                <div>
+                    <span class="auth-field-title">Sign in as</span>
+                    <div class="role-picker">
+                        <label class="role-option">
+                            <input type="radio" th:field="*{role}" value="customer">
+                            <span class="role-option-copy">
+                                <span class="role-option-title">Customer</span>
+                                <small>Browse the catalog, manage your cart, and review orders.</small>
+                            </span>
+                        </label>
+
+                        <label class="role-option">
+                            <input type="radio" th:field="*{role}" value="admin">
+                            <span class="role-option-copy">
+                                <span class="role-option-title">Admin</span>
+                                <small>Manage books, users, orders, and storefront operations.</small>
+                            </span>
+                        </label>
+                    </div>
+                    <small class="field-error" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role error</small>
+                </div>
+
+                <label>
+                    Email address
+                    <input type="email" th:field="*{email}" placeholder="name@example.com" autocomplete="email">
+                    <small class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</small>
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" th:field="*{password}" placeholder="Enter your password" autocomplete="current-password">
+                    <small class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</small>
+                </label>
+
+                <button class="primary-btn" type="submit">Sign In</button>
+            </form>
+
+            <div class="auth-form-footer">
+                <span>New to Chapter Lane?</span>
+                <a th:href="@{/register}">Create a customer account</a>
+            </div>
+        </article>
+    </section>
+</main>
+
+<div th:replace="~{fragments/alerts :: flashMessages}"></div>
+<div th:replace="~{fragments/footer :: siteFooter}"></div>
+</body>
+</html>

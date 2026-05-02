@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="flashMessages" class="flash-stack">
+    <div class="flash-card flash-success" th:if="${successMessage}" data-auto-dismiss>
+        <strong>Success</strong>
+        <p th:text="${successMessage}">Success message</p>
+    </div>
+    <div class="flash-card flash-error" th:if="${errorMessage}" data-auto-dismiss>
+        <strong>Notice</strong>
+        <p th:text="${errorMessage}">Error message</p>
+    </div>
+</div>
+</body>
+</html>
