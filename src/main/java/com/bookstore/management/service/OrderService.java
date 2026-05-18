@@ -1,24 +1,25 @@
-package com.bookstore.management.service;
-
-import com.bookstore.management.dto.CheckoutForm;
-import com.bookstore.management.model.Book;
-import com.bookstore.management.model.Cart;
-import com.bookstore.management.model.CartItem;
-import com.bookstore.management.model.Customer;
-import com.bookstore.management.model.OrderItem;
-import com.bookstore.management.model.OrderRecord;
-import com.bookstore.management.model.OrderStatus;
-import com.bookstore.management.repository.OrderRepository;
-import com.bookstore.management.util.IdGenerator;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-
-@Service
-public class OrderService {
+// ORDER SERVICE - U.L.G.Maduwantha - IT19010618
+// Handles all business logic for order management
+package com.bookstore.management.service ;
+import com.bookstore.management.dto.CheckoutForm ;
+import com.bookstore.management.model.Book ;
+import com.bookstore.management.model.Cart ;
+import com.bookstore.management.model.CartItem ;
+import com.bookstore.management.model.Customer ;
+import com.bookstore.management.model.OrderItem ;
+import com.bookstore.management.model.OrderRecord ;
+import com.bookstore.management.model.OrderStatus ;
+import com.bookstore.management.repository.OrderRepository ;
+import com.bookstore.management.util.IdGenerator ;
+import org.springframework.stereotype.Service ;
+import java.time.LocalDateTime ;
+import java.util.Comparator ;
+import java.util.List ;
+import java.util.Locale ;
+    @Service
+public class OrderService  {
+    // DEPENDENCY INJECTION
+    // Inject required services and repository
 
     private final OrderRepository orderRepository;
     private final CartService cartService;
@@ -32,6 +33,10 @@ public class OrderService {
         this.bookService = bookService;
         this.customerService = customerService;
     }
+
+    // PLACE ORDER
+    // Validates cart and stock, creates order record,
+    // decreases book stock, and clears the cart
 
     public OrderRecord placeOrder(String customerId, CheckoutForm form) {
         Customer customer = customerService.requireById(customerId);
@@ -79,11 +84,19 @@ public class OrderService {
         return order;
     }
 
+    //  LIST CUSTOMER ORDERS
+    // Returns all orders for a specific customer
+    // sorted by newest first
+
     public List<OrderRecord> listCustomerOrders(String customerId) {
         return orderRepository.findByCustomerId(customerId).stream()
                 .sorted(Comparator.comparing(OrderRecord::getCreatedAt).reversed())
                 .toList();
     }
+
+    // LIST ALL ORDERS (ADMIN)
+    // Returns all orders with optional search filter
+    // and status filter, sorted by newest first
 
     public List<OrderRecord> listAll(String query, String status) {
         String normalizedQuery = normalize(query);
@@ -98,6 +111,10 @@ public class OrderService {
                 .toList();
     }
 
+    // UPDATE ORDER STATUS (ADMIN)
+    // Updates order status, restores stock if cancelled
+    // Cancelled orders cannot be re-opened
+
     public OrderRecord updateStatus(String orderId, OrderStatus status) {
         OrderRecord order = requireById(orderId);
         if (order.getStatus() == OrderStatus.CANCELLED && status != OrderStatus.CANCELLED) {
@@ -111,6 +128,11 @@ public class OrderService {
         orderRepository.save(order);
         return order;
     }
+
+    // CANCEL ORDER BY CUSTOMER
+    // Allows customer to cancel their own order
+    // Restores stock on cancellation
+    // Cannot cancel shipped or delivered orders
 
     public OrderRecord cancelByCustomer(String customerId, String orderId) {
         OrderRecord order = requireById(orderId);
@@ -129,6 +151,9 @@ public class OrderService {
         return order;
     }
 
+    // DELETE ORDER (ADMIN)
+    // Only cancelled or delivered orders can be deleted
+
     public void delete(String orderId) {
         OrderRecord order = requireById(orderId);
         if (order.getStatus() != OrderStatus.CANCELLED && order.getStatus() != OrderStatus.DELIVERED) {
@@ -137,12 +162,17 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
+    // HELPER METHODS
+    // requireById   - finds order or throws error
+    // count         - total number of orders
+    // activeOrderCount - orders not cancelled/delivered
+    // revenue       - total revenue excluding cancelled
+    // statusOptions - returns all status enum values
+
     public OrderRecord requireById(String orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found."));
-    }
-
-    public long count() {
+                .orElseThrow(() -> new IllegalArgumentException("Order not found."));}
+        public long count() {
         return orderRepository.count();
     }
 
@@ -163,6 +193,11 @@ public class OrderService {
         return OrderStatus.values();
     }
 
+    // SECTION 9: PRIVATE UTILITY METHODS
+    // restoreStock - increases stock for all order items
+    // contains     - checks if source contains query
+    // normalize    - trims and lowercases a string
+    // -----------------------------------------------
     private void restoreStock(OrderRecord order) {
         for (OrderItem item : order.getItems()) {
             bookService.increaseStock(item.getBookId(), item.getQuantity());
