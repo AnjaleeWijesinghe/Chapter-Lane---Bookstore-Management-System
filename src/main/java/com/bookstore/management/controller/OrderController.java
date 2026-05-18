@@ -1,3 +1,6 @@
+// ORDER CONTROLLER - U.L.G.Maduwantha - IT19010618
+// Handles HTTP requests for order management
+// Customer order view, checkout, and cancel
 package com.bookstore.management.controller;
 
 import com.bookstore.management.dto.CheckoutForm;
@@ -18,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class OrderController {
 
+    //DEPENDENCY INJECTION
+    // Inject OrderService and SessionService
+
     private final OrderService orderService;
     private final SessionService sessionService;
 
@@ -26,12 +32,22 @@ public class OrderController {
         this.sessionService = sessionService;
     }
 
+    // VIEW ORDERS - GET /orders
+    // Loads all orders for the logged-in customer
+    // and displays them on the orders page
+
     @GetMapping("/orders")
     public String orders(HttpSession session, Model model) {
         Customer customer = currentCustomer(session);
         model.addAttribute("orders", orderService.listCustomerOrders(customer.getId()));
         return "orders";
     }
+
+
+    // CHECKOUT - POST /orders/checkout
+    // Validates checkout form and places a new order
+    // Redirects to orders page on success
+    // Redirects back to cart on validation error
 
     @PostMapping("/orders/checkout")
     public String checkout(@Valid @ModelAttribute("checkoutForm") CheckoutForm form,
@@ -54,6 +70,10 @@ public class OrderController {
         }
     }
 
+    // CANCEL ORDER - POST /orders/{orderId}/cancel
+    // Allows customer to cancel their own order
+    // Redirects back to orders page with result message
+
     @PostMapping("/orders/{orderId}/cancel")
     public String cancel(@PathVariable String orderId,
                          HttpSession session,
@@ -66,6 +86,10 @@ public class OrderController {
         }
         return "redirect:/orders";
     }
+
+    // PRIVATE HELPER METHOD
+    // Gets the current logged-in customer from session
+    // Throws error if customer session not found
 
     private Customer currentCustomer(HttpSession session) {
         return sessionService.getCurrentCustomer(session)
