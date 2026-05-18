@@ -155,6 +155,9 @@ public class OrderService {
         return order;
     }
 
+    // DELETE ORDER (ADMIN)
+    // Only cancelled or delivered orders can be deleted
+
     public void delete(String orderId) {
         OrderRecord order = requireById(orderId);
         if (order.getStatus() != OrderStatus.CANCELLED && order.getStatus() != OrderStatus.DELIVERED) {
