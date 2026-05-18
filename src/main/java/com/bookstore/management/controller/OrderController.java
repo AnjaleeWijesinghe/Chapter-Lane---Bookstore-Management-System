@@ -87,6 +87,10 @@ public class OrderController {
         return "redirect:/orders";
     }
 
+    // PRIVATE HELPER METHOD
+    // Gets the current logged-in customer from session
+    // Throws error if customer session not found
+
     private Customer currentCustomer(HttpSession session) {
         return sessionService.getCurrentCustomer(session)
                 .orElseThrow(() -> new IllegalArgumentException("Customer session not found."));
