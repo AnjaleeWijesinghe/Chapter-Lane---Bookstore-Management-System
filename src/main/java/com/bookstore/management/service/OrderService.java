@@ -98,6 +98,10 @@ public class OrderService {
                 .toList();
     }
 
+    // LIST ALL ORDERS (ADMIN)
+    // Returns all orders with optional search filter
+    // and status filter, sorted by newest first
+
     public List<OrderRecord> listAll(String query, String status) {
         String normalizedQuery = normalize(query);
         String normalizedStatus = normalize(status);
