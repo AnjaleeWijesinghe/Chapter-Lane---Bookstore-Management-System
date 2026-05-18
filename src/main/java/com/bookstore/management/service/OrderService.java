@@ -115,6 +115,10 @@ public class OrderService {
                 .toList();
     }
 
+    // UPDATE ORDER STATUS (ADMIN)
+    // Updates order status, restores stock if cancelled
+    // Cancelled orders cannot be re-opened
+
     public OrderRecord updateStatus(String orderId, OrderStatus status) {
         OrderRecord order = requireById(orderId);
         if (order.getStatus() == OrderStatus.CANCELLED && status != OrderStatus.CANCELLED) {
