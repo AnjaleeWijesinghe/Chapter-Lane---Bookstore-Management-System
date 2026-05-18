@@ -21,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class OrderController {
 
+    //DEPENDENCY INJECTION
+    // Inject OrderService and SessionService
+
     private final OrderService orderService;
     private final SessionService sessionService;
 
