@@ -22,5 +22,21 @@ import java.util.Locale;
 @Service
 public class OrderService {
 
+    // DEPENDENCY INJECTION
+    // Inject required services and repository
+
+    private final OrderRepository orderRepository;
+    private final CartService cartService;
+    private final BookService bookService;
+    private final CustomerService customerService;
+
+    public OrderService(OrderRepository orderRepository, CartService cartService, BookService bookService,
+                        CustomerService customerService) {
+        this.orderRepository = orderRepository;
+        this.cartService = cartService;
+        this.bookService = bookService;
+        this.customerService = customerService;
+    }
+
 }
 
