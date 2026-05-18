@@ -166,6 +166,13 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
+    // HELPER METHODS
+    // requireById   - finds order or throws error
+    // count         - total number of orders
+    // activeOrderCount - orders not cancelled/delivered
+    // revenue       - total revenue excluding cancelled
+    // statusOptions - returns all status enum values
+
     public OrderRecord requireById(String orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found."));
