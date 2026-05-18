@@ -133,6 +133,11 @@ public class OrderService {
         return order;
     }
 
+    // CANCEL ORDER BY CUSTOMER
+    // Allows customer to cancel their own order
+    // Restores stock on cancellation
+    // Cannot cancel shipped or delivered orders
+
     public OrderRecord cancelByCustomer(String customerId, String orderId) {
         OrderRecord order = requireById(orderId);
         if (!order.getCustomerId().equals(customerId)) {
