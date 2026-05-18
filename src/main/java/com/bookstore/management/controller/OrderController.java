@@ -1,4 +1,6 @@
-// Order Management Module - U.L.G.Maduwantha - IT19010618
+// ORDER CONTROLLER - U.L.G.Maduwantha - IT19010618
+// Handles HTTP requests for order management
+// Customer order view, checkout, and cancel
 package com.bookstore.management.controller;
 
 import com.bookstore.management.dto.CheckoutForm;
