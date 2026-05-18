@@ -32,6 +32,10 @@ public class OrderController {
         this.sessionService = sessionService;
     }
 
+    // VIEW ORDERS - GET /orders
+    // Loads all orders for the logged-in customer
+    // and displays them on the orders page
+
     @GetMapping("/orders")
     public String orders(HttpSession session, Model model) {
         Customer customer = currentCustomer(session);
