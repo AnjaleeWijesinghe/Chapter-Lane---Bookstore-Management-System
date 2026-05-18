@@ -88,6 +88,10 @@ public class OrderService {
         return order;
     }
 
+    //  LIST CUSTOMER ORDERS
+    // Returns all orders for a specific customer
+    // sorted by newest first
+
     public List<OrderRecord> listCustomerOrders(String customerId) {
         return orderRepository.findByCustomerId(customerId).stream()
                 .sorted(Comparator.comparing(OrderRecord::getCreatedAt).reversed())
