@@ -199,6 +199,11 @@ public class OrderService {
         return OrderStatus.values();
     }
 
+    // SECTION 9: PRIVATE UTILITY METHODS
+    // restoreStock - increases stock for all order items
+    // contains     - checks if source contains query
+    // normalize    - trims and lowercases a string
+    // -----------------------------------------------
     private void restoreStock(OrderRecord order) {
         for (OrderItem item : order.getItems()) {
             bookService.increaseStock(item.getBookId(), item.getQuantity());
