@@ -70,6 +70,10 @@ public class OrderController {
         }
     }
 
+    // CANCEL ORDER - POST /orders/{orderId}/cancel
+    // Allows customer to cancel their own order
+    // Redirects back to orders page with result message
+
     @PostMapping("/orders/{orderId}/cancel")
     public String cancel(@PathVariable String orderId,
                          HttpSession session,
