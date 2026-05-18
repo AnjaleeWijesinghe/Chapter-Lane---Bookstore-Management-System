@@ -43,6 +43,12 @@ public class OrderController {
         return "orders";
     }
 
+
+    // CHECKOUT - POST /orders/checkout
+    // Validates checkout form and places a new order
+    // Redirects to orders page on success
+    // Redirects back to cart on validation error
+
     @PostMapping("/orders/checkout")
     public String checkout(@Valid @ModelAttribute("checkoutForm") CheckoutForm form,
                            BindingResult bindingResult,
