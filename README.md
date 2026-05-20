@@ -128,11 +128,11 @@ Use the table below in your final submission. If needed, replace the "Member" la
 
 | Member | Assigned Area | Main Responsibility | Key Files / Screens |
 |---|---|---|---|
-| Member 1 | User Management | registration, login, profile update, delete, customer search/list | `AuthController`, `ProfileController`, `CustomerService`, `CustomerRepository`, `auth/login.html`, `auth/register.html`, `profile.html`, `admin/users.html` |
-| Member 2 | Book Management | add, search, update, delete books, stock handling | `BookService`, `BookRepository`, `Book`, `PrintedBook`, `DigitalBook`, `catalog.html`, `admin/books.html` |
-| Member 3 | Cart Management | add to cart, update quantity, remove item, clear cart | `CartController`, `CartService`, `CartRepository`, `Cart`, `CartItem`, `cart.html` |
-| Member 4 | Order Management | checkout, order creation, order listing, cancel order, status updates | `OrderController`, `OrderService`, `OrderRepository`, `OrderRecord`, `OrderItem`, `orders.html`, `admin/orders.html` |
-| Member 5 | Admin Management | admin CRUD, audit logs, admin dashboard, store control | `AdminController`, `AdminService`, `AuditService`, `Admin`, `AuditLogEntry`, `admin/dashboard.html`, `admin/admins.html` |
+| Member 1(IT21040726) | User Management | registration, login, profile update, delete, customer search/list | `AuthController`, `ProfileController`, `CustomerService`, `CustomerRepository`, `auth/login.html`, `auth/register.html`, `profile.html`, `admin/users.html` |
+| Member 2(It20660734) | Book Management | add, search, update, delete books, stock handling | `BookService`, `BookRepository`, `Book`, `PrintedBook`, `DigitalBook`, `catalog.html`, `admin/books.html` |
+| Member 3(IT20652432) | Cart Management | add to cart, update quantity, remove item, clear cart | `CartController`, `CartService`, `CartRepository`, `Cart`, `CartItem`, `cart.html` |
+| Member 4(IT19010618) | Order Management | checkout, order creation, order listing, cancel order, status updates | `OrderController`, `OrderService`, `OrderRepository`, `OrderRecord`, `OrderItem`, `orders.html`, `admin/orders.html` |
+| Member 5(IT20658786) | Admin Management | admin CRUD, audit logs, admin dashboard, store control | `AdminController`, `AdminService`, `AuditService`, `Admin`, `AuditLogEntry`, `admin/dashboard.html`, `admin/admins.html` |
 
 ### Shared Foundation Work
 
